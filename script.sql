@@ -1,3 +1,8 @@
+-- 5 Entrega final
+-- Chegar neste ponto é notável. Algo que merece destaque. O commit que representa essa
+-- fase tem que ser destacado. Faça isso criando uma tag anotada, com o nome seguindo o
+-- versionamento semântico.
+
 -- 4 Salário versus estudos
 -- Dentre os alunos que têm salário maior que 410, quantos costumam se preparar com
 -- frequência (regularmente) para os exames? Escreva um stored procedure que exibe esse
@@ -22,7 +27,7 @@ DECLARE
 quantidade INT;
 BEGIN
     CALL sp_sala_vs_estudos(quantidade);
-        IF quantidade = NULL THEN
+        IF quantidade IS NULL THEN
             quantidade := 0;
         END IF;
     RAISE NOTICE 'A quantidade de alunos é: %', quantidade;
