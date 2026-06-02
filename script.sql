@@ -1,9 +1,40 @@
+-- 3 Resultado em função dos estudos
+-- Escreva um stored procedure que disponibiliza, utilizando um parâmetro em modo OUT, o
+-- número de alunos aprovados dentre aqueles que estudam sozinhos
 
+CREATE OR REPLACE PROCEDURE sp_alunos_alones_aprovados(
+    OUT quantidade INT
+) LANGUAGE plpgsql
+AS $$
+DECLARE
+    cur_students CURSOR FOR SELECT grade, prep_study FROM tb_students;
+    tupla RECORD;
+BEGIN
+    quantidade := 0;
+    OPEN cur_students;
+    FETCH cur_students INTO tupla;
+    WHILE FOUND LOOP
+        IF tupla.grade != 0 AND tupla.prep_study = 1 THEN
+            quantidade := quantidade + 1;
+        END IF;
+        FETCH cur_students INTO tupla;
+    END LOOP;
+    CLOSE cur_students;   
+END;
+$$;
+
+DO $$
+DECLARE
+    quantidade_alunos_soz INT;
+BEGIN
+    CALL sp_alunos_alones_aprovados(quantidade_alunos_soz);
+    RAISE NOTICE 'A quantidade de alunos aprovados que estudam sozinhos é: %',quantidade_alunos_soz;
+END;
+$$;
 
 -- 2 Resultado em função da formação dos pais
 -- Escreva um stored procedure que exibe o número de alunos aprovados e cujos pais são
 -- ambos PhDs.
-
 CREATE OR REPLACE PROCEDURE sp_aprovados()
 LANGUAGE plpgsql
 AS $$
