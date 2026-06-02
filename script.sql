@@ -1,3 +1,34 @@
+-- 4 Salário versus estudos
+-- Dentre os alunos que têm salário maior que 410, quantos costumam se preparar com
+-- frequência (regularmente) para os exames? Escreva um stored procedure que exibe esse
+-- valor.
+
+CREATE OR REPLACE PROCEDURE sp_sala_vs_estudos(
+    OUT quantidade INT
+) LANGUAGE plpgsql
+AS $$
+    BEGIN
+        $1 := 0;
+        SELECT COUNT(id_student), salary, prep_exam
+        FROM tb_students
+        WHERE salary = 5 AND prep_exam = 2
+        GROUP BY salary, prep_exam
+        INTO quantidade;
+    END;
+$$;
+
+DO $$
+DECLARE
+quantidade INT;
+BEGIN
+    CALL sp_sala_vs_estudos(quantidade);
+        IF quantidade = NULL THEN
+            quantidade := 0;
+        END IF;
+    RAISE NOTICE 'A quantidade de alunos é: %', quantidade;
+END;
+$$;
+
 -- 3 Resultado em função dos estudos
 -- Escreva um stored procedure que disponibiliza, utilizando um parâmetro em modo OUT, o
 -- número de alunos aprovados dentre aqueles que estudam sozinhos
